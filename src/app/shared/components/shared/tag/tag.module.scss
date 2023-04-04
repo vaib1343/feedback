@@ -1,0 +1,19 @@
+.container {
+    padding: 1rem 1.6rem;
+    border-radius: 1rem;
+    color: #4661e6;
+    background-color: #f2f4ff;
+    display: inline-block;
+    font-weight: 600;
+    cursor: pointer !important;
+    transition: background 0.1s ease;
+
+    &:hover {
+        background: #cfd7ff;
+    }
+
+    &[data-selected="true"] {
+        background-color: #4661e6;
+        color: #f2f4ff;
+    }
+}

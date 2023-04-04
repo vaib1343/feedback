@@ -1,4 +1,4 @@
-import './globals.css'
+import 'app/styles/globalStyles.css';
 
 export const metadata = {
   title: 'Create Next App',
@@ -12,7 +12,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body style={{ height: '100vh', width: '100vw', backgroundColor: '' }}>{children}</body>
     </html>
   )
 }
