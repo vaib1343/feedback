@@ -17,7 +17,7 @@ function Navbar() {
   return (
     <>
       <React.Fragment>
-        <nav className={styles.container}>
+        <nav className={styles.mobileContainer}>
           <div className={styles.headingContainer}>
             <h1>
               Frontend Mentor
@@ -39,24 +39,37 @@ function Navbar() {
             </div>
           </Container>
           <Container style={{ marginTop: '2.4rem' }}>
-            <Roadmap/>
+            <Roadmap />
           </Container>
         </div>
       </div>
-      {/* <S.container>
-        <S.headingContainer>
-          <h1>Frontend Mentor</h1>
-          <h5>Feedback Board</h5>
-        </S.headingContainer>
-        <S.icon onClick={() => setShow(!show)}>
-          {!show ? <RxHamburgerMenu /> : <IoCloseSharp />}
-        </S.icon>
-      </S.container>
-      {<S.sidebarContainer isShow={show}>
-        <S.sidebar>
-          xyz
-        </S.sidebar>
-      </S.sidebarContainer>} */}
+      <div className={styles.bigScreenContainger}>
+        <Container style={{
+          background: `radial-gradient(128.88% 128.88% at 103.9% -10.39%,#e84d70 0%, #a337f6 53.09%,#28a7ed 100%)`, color: '#ffff',
+          fontSize: '2rem',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'end'
+        }}>
+          <h1>
+            Frontend Mentor
+          </h1>
+          <p>Feedback Board</p>
+        </Container>
+        <Container style={{
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          gap: '1rem'
+        }}>
+          {
+            Tags.map((item) => <Tag selected={selectedTag === item} onClick={() => setSelectedTag(item)} key={item}>{item}</Tag>)
+          }
+        </Container>
+        <Container>
+          <Roadmap />
+        </Container>
+      </div>
     </>
   )
 }

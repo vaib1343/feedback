@@ -7,9 +7,9 @@ interface TagProps extends React.ComponentPropsWithoutRef<'div'> {
 }
 
 function Tag(props: TagProps) {
-    const { children, selected, ...rest } = props;
+    const { children, selected, className ,...rest } = props;
     return (
-        <div data-selected={selected} className={styles.container} {...rest}>{children}</div>
+        <div data-selected={selected} className={`${styles.container} ${className}`} {...rest}>{children}</div>
     )
 }
 

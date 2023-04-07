@@ -12,7 +12,6 @@ function List(props: ListProps) {
     for (let i = 0; i < data.length; i++) {
         items.push(children(data[i]))
     }
-    console.log({items})
     return <ul {...rest}>
         {items}
     </ul>

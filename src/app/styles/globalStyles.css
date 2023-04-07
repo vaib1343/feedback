@@ -129,3 +129,21 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+
+.main_box {
+    width: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+    .main_box {
+        max-width: 68.9rem;
+        margin: auto;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .main_box {
+        max-width: 68.9rem;
+        margin: auto;
+    }
+}

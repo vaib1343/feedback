@@ -1,4 +1,4 @@
-.container {
+.mobileContainer {
     width: 100%;
     background: radial-gradient(
         128.88% 128.88% at 103.9% -10.39%,
@@ -14,6 +14,11 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.bigScreenContainger {
+    display: none;
+}
+
 .headingContainer {
     h1 {
         font-size: 1.5rem;
@@ -65,4 +70,28 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 1rem;
+}
+
+@media only screen and (min-width: 768px) {
+    .mobileContainer {
+        display: none;
+    }
+
+    .sidebarContainer {
+        display: none;
+    }
+
+    .bigScreenContainger {
+        font-size: 1.5rem;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-top: 5.6rem;
+    }
+}
+
+@media only screen and (min-width: 1440px) {
+    .bigScreenContainger {
+        font-size: 1.5rem;
+    }
 }

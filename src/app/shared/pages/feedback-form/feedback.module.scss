@@ -1,0 +1,36 @@
+.formContainer {
+    max-width: 90%;
+    margin: auto;
+    border-radius: 1rem;
+    background-color: #fff;
+    padding: 4.4rem 2.3rem;
+    
+    form {
+        margin-top: 2.4rem;
+    }
+}
+
+.heading {
+    font-size: 1.8rem
+}
+
+.formField {
+    margin-top: 2.4rem;
+}
+
+@media only screen and (min-width: 768px) {
+    .formContainer {
+        max-width: 54rem;
+        padding: 5.2rem 4.2rem;
+
+        form {
+            margin-top: 4rem;
+        }
+    }
+
+    .heading {
+        font-size: 2.2rem;
+        color: #3A4374;
+        font-weight: 700;
+    }
+}

@@ -1,0 +1,72 @@
+.input {
+    width: 100%;
+    border-radius: 0.5rem;
+    background-color: #f7f8fd;
+    outline: 0;
+    border: 0;
+    padding: 1.3rem 2.4rem;
+    font-size: 1.3rem;
+    color: #3a4374;
+    font-family: inherit;
+    &:focus {
+        border: 0.5px solid #4661e6;
+    }
+    &[data-state="error"] {
+        border: 0.5px solid #d73737;
+    }
+}
+
+.input:focus ~ .option {
+    display: block;
+}
+
+.option:hover {
+    display: block;
+}
+
+.label {
+    display: block;
+    color: #3a4374;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.description {
+    display: block;
+    color: #647196;
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-top: 0.3rem;
+    margin-bottom: 1.6rem;
+}
+
+.option {
+    display: none;
+    background-color: inherit;
+    background: #ffffff;
+    box-shadow: 0px 10px 40px -7px rgba(55, 63, 104, 0.350492);
+    border-radius: 1rem;
+    color: black;
+    width: 100%;
+    color: #647196;
+    transition: all 0.2s ease;
+
+    li {
+        padding: 1.2rem 2.4rem;
+        border-bottom: 1px solid rgba($color: #647196, $alpha: 0.2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        &:hover {
+            color: #ad1fea;
+            cursor: pointer;
+        }
+        &:last-child {
+            border: 0px;
+        }
+    }
+}
+
+.tick {
+    color: #ad1fea;
+}
