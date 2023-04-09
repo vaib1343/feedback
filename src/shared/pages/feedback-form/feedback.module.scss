@@ -1,0 +1,79 @@
+.formContainer {
+    margin: auto;
+    border-radius: 1rem;
+    background-color: #fff;
+    padding: 4.4rem 2.3rem;
+    position: relative;
+    
+    form {
+        margin-top: 2.4rem;
+    }
+}
+
+.heading {
+    font-size: 1.8rem
+}
+
+.formField {
+    margin-top: 2.4rem;
+}
+
+.buttonContainer {
+    display: grid;
+    grid-gap: 1rem;
+    grid-auto-rows: minmax(4rem, auto);
+    margin-top: 2rem;
+}
+
+.formIcon {
+    height: 5.6rem;
+    width: 5.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -3rem;
+    color: #FFF;
+    background: radial-gradient(
+        128.88% 128.88% at 103.9% -10.39%,
+        #e84d70 0%,
+        #a337f6 53.09%,
+        #28a7ed 100%
+    );
+    border-radius: 50%;
+    font-size: 3rem;
+    font-weight: 800;
+}
+
+@media only screen and (min-width: 768px) {
+    .formContainer {
+        padding: 5.2rem 4.2rem;
+
+        form {
+            margin-top: 4rem;
+        }
+    }
+
+    .heading {
+        font-size: 2.2rem;
+        color: #3A4374;
+        font-weight: 700;
+    }
+    .buttonContainer {
+        grid-template-columns: 1fr 1fr 1fr 1.5fr;
+        grid-template-rows: 1fr;
+    }
+    .feedbackBtn {
+        grid-column: 4/5;
+    }
+
+    .cancelBtn {
+        grid-column: 3/4;
+        grid-row: 1/2;
+    }
+
+    .deleteBtn {
+        grid-column: 1/2;
+        grid-row: 1/2;
+    }
+}

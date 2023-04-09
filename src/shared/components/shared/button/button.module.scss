@@ -1,0 +1,26 @@
+.button {
+    padding: 1.05rem 1.8rem;
+    border-radius: 1rem;
+    color: white;
+    background-color: #AD1FEA !important;
+    border: 0px;
+    outline: 0px;
+    font-weight: 700;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.9;
+    }
+}
+
+.default {
+    background-color: #AD1FEA !important;
+}
+
+.danger {
+    background-color: #D73737 !important;
+}
+
+.dark {
+    background-color: #3A4374 !important;
+}
