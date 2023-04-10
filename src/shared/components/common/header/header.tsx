@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Button from 'src/shared/components/shared/button/button';
 import Dropdown from 'src/shared/components/shared/dropdown/dropdown';
 import styles from 'src/shared/components/common/header/header.module.scss'
-import { useRouter } from 'next/router'
 const options = [
     {
         id: 0,
@@ -27,7 +26,6 @@ const options = [
 ]
 
 function Header() {
-    const navigate = useRouter();
     const [sortBy, setSortBy] = useState<{
         id: string | number,
         label: string,
