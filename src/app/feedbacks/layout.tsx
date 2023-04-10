@@ -11,8 +11,6 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body style={{ height: '100vh', width: '100vw', backgroundColor: '#F7F8FD' }}>{children}</body>
-    </html>
+    <div style={{ height: '100vh', width: '100vw', backgroundColor: '#F7F8FD' }}>{children}</div>
   )
 }

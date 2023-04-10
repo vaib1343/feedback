@@ -1,4 +1,5 @@
 import { db, app } from "@/shared/config/firebaseConfig";
+import { SignUpPayload } from "@/shared/types/auth.types";
 import {
     signInWithEmailAndPassword,
     signOut,
@@ -43,7 +44,7 @@ export const firebaseSignUp = async (payload: SignUpPayload) => {
     }
 };
 
-const logout = async () => {
+export const logout = async () => {
     return await signOut(auth);
 };
 

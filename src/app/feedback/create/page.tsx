@@ -10,7 +10,7 @@ const jost = Jost({
 function CreateFeedback() {
   return (
     <div className={`${jost.className} ${styles.container}`}>
-      <FeedbackForm />
+      <FeedbackForm type='create'/>
     </div>
   )
 }

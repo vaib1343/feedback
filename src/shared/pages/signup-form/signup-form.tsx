@@ -4,6 +4,7 @@ import styles from '@/shared/pages/signup-form/signup-form.module.scss';
 import Input from '@/shared/components/shared/input/input';
 import Button from '@/shared/components/shared/button/button';
 import { firebaseSignUp } from '@/shared/utils/firebase/auth';
+import { useRouter } from 'next/navigation';
 
 interface userState {
     firstName: string,
@@ -21,6 +22,7 @@ function SignUpForm() {
         password: '',
         confirmPassword: '',
     });
+    const router = useRouter();
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = event.target;
         setUserDetails((preState => ({
@@ -32,6 +34,7 @@ function SignUpForm() {
     const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         const userInfo = await firebaseSignUp(userDetails);
+        router.push('/feedbacks')
     }
 
     return (

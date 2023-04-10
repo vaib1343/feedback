@@ -1,11 +1,16 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { IoCloseSharp, } from 'react-icons/io5'
 import { RxHamburgerMenu } from 'react-icons/rx';
 import styles from 'src/shared/components/common/navbar/navbar.module.scss';
 import Tag from 'src/shared/components/shared/tag/tag';
-import Container from '../../shared/container/container';
+import Container from '@/shared/components/shared/container/container'
 import Roadmap from './roadmap/roadmap';
+import Button from '../../shared/button/button';
+import { UserContext } from '@/shared/context/user-context';
+import { logout } from '@/shared/utils/firebase/auth';
+import { useRouter } from 'next/navigation';
+import { User } from 'firebase/auth';
 
 const Tags = [
   'All', 'UI', 'UX', 'Enhancement', 'Bug', 'Feature'
@@ -14,21 +19,29 @@ const Tags = [
 function Navbar() {
   const [show, setShow] = useState(false)
   const [selectedTag, setSelectedTag] = useState('All');
+  const { user, setUser } = useContext(UserContext);
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const response = await logout();
+    console.log(response)
+    router.push('/login');
+    setUser({} as User)
+  }
+
   return (
     <>
-      <React.Fragment>
-        <nav className={styles.mobileContainer}>
-          <div className={styles.headingContainer}>
-            <h1>
-              Frontend Mentor
-            </h1>
-            <p>Feedback Board</p>
-          </div>
-          <div className={styles.icon} onClick={() => setShow(!show)}>
-            {show ? <IoCloseSharp /> : <RxHamburgerMenu />}
-          </div>
-        </nav>
-      </React.Fragment>
+      <nav className={styles.mobileContainer}>
+        <div className={styles.headingContainer}>
+          <h1>
+            Frontend Mentor
+          </h1>
+          <p>Feedback Board</p>
+        </div>
+        <div className={styles.icon} onClick={() => setShow(!show)}>
+          {show ? <IoCloseSharp /> : <RxHamburgerMenu />}
+        </div>
+      </nav>
       <div className={styles.sidebarContainer} data-show={show ? 'show' : 'hide'}>
         <div className={styles.sidebar} data-show={show ? 'show' : 'hide'}>
           <Container>
@@ -41,6 +54,10 @@ function Navbar() {
           <Container style={{ marginTop: '2.4rem' }}>
             <Roadmap />
           </Container>
+          <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end', flexDirection: 'column' }}>
+            <h4 style={{ marginBlock: '1rem' }}>{user.displayName}</h4>
+            <Button onClick={handleLogout}>Logout</Button>
+          </div>
         </div>
       </div>
       <div className={styles.bigScreenContainger}>
@@ -69,6 +86,10 @@ function Navbar() {
         <Container>
           <Roadmap />
         </Container>
+        <div className={styles.logoutContainer}>
+          <h4>{user.displayName}</h4>
+          <Button onClick={handleLogout}>Logout</Button>
+        </div>
       </div>
     </>
   )

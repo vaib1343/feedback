@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import Button from 'src/shared/components/shared/button/button';
 import Dropdown from 'src/shared/components/shared/dropdown/dropdown';
-import styles from 'src/shared/components/common/header/header.module.scss'
+import styles from 'src/shared/components/common/header/header.module.scss';
+import Link from 'next/link';
+
 const options = [
     {
         id: 0,
@@ -35,7 +37,9 @@ function Header() {
     return (
         <div className={styles.container}>
             <Dropdown options={options} label={<span>Sort By: <span className={styles.label}>{sortBy.label}</span></span>} value={sortBy} onChange={(e) => setSortBy(e)} />
-            <Button>+ Add Feedback</Button>
+            <Link href='/feedback/create'>
+                <Button>+ Add Feedback</Button>
+            </Link>
         </div>
     )
 }
