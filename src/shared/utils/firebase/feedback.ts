@@ -5,6 +5,13 @@ import {
     collection,
     serverTimestamp,
     getDocs,
+    query,
+    orderBy,
+    Query,
+    DocumentData,
+    updateDoc,
+    doc,
+    getDoc,
 } from "firebase/firestore";
 
 export const addFeedback = async (payload: Feedback) => {
@@ -21,9 +28,35 @@ export const addFeedback = async (payload: Feedback) => {
     });
 };
 
-export const getFeedbacks = async () => {
+export const updateFeedback = async (
+    payload: Feedback & { vote: number; comments: Array<string>; id: string }
+) => {
+    const { id, vote, comments, title, details, category, updateStatus } =
+        payload;
+    const collRef = doc(db, "feedbacks", id);
+    return await updateDoc(collRef, {
+        title,
+        category,
+        details,
+        updateStatus,
+        comments,
+        vote,
+    });
+};
+
+export const getFeedback = async (id: string) => {
+    const collRef = doc(db, "feedbacks", id);
+    const response  = await getDoc(collRef);
+    return response.data()
+}
+
+export const getFeedbacks = async (queryCb?: () => Query<DocumentData>) => {
     const feedbacks: any[] = [];
     const collRef = collection(db, "feedbacks");
+    let q;
+    if (queryCb) {
+        q = queryCb();
+    }
     const response = await getDocs(collRef);
     response.docs.map((doc) => {
         feedbacks.push({ ...doc.data(), id: doc.id });

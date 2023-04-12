@@ -1,14 +1,19 @@
 .mainContainer {
     max-width: 90%;
     margin: auto;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-top: 2.4rem;
-    display: grid;
-    gap: 2.4rem;
 }
 
 .card {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    margin-top: 2.4rem;
 }
 
 .body {
@@ -30,8 +35,13 @@
 
 @media only screen and (min-width: 768px) {
     .mainContainer {
-        max-width: 100%;
+        max-width: 73rem;
     }
+
+    .container {
+        margin-top: 8rem;
+    }
+
     .card {
         grid-template-columns: 70px 1fr 50px;
         gap: 2rem;

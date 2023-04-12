@@ -1,15 +1,16 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { MdAdd } from 'react-icons/md';
+import { BsPenFill } from 'react-icons/bs'
+import { useRouter, useSearchParams } from 'next/navigation';
 import styles from '@/shared/pages/feedback-form/feedback.module.scss';
 import Input from '@/shared/components/shared/input/input';
 import TextBox from '@/shared/components/shared/textbox/textbox';
 import Select from '@/shared/components/shared/select/select';
 import Button from '@/shared/components/shared/button/button';
-import { MdAdd } from 'react-icons/md';
-import { CATEGORY_OPTIONS, STATUS_OPTIONS } from '@/shared/config/constant';
 import GoBack from '@/shared/components/common/go-back/go-back';
-import { useRouter } from 'next/navigation';
-import { addFeedback } from '@/shared/utils/firebase/feedback';
+import { addFeedback, getFeedback } from '@/shared/utils/firebase/feedback';
+import { CATEGORY_OPTIONS, STATUS_OPTIONS } from '@/shared/config/constant';
 
 interface FormFieldTypes {
     category: string,
@@ -30,7 +31,7 @@ interface FeedbackFormProps {
 }
 
 function FeedbackForm(props: FeedbackFormProps) {
-    const { type } = props;
+    const { type } = props
     const [error, setError] = useState<FieldErrorTypes>();
     const [formState, setFormState] = useState<FormFieldTypes>({
         category: 'enhancement',
@@ -39,6 +40,9 @@ function FeedbackForm(props: FeedbackFormProps) {
         details: '',
     });
     const router = useRouter();
+    const { get } = useSearchParams();
+    console.log(get('id'))
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { value, name } = e.target;
@@ -96,14 +100,27 @@ function FeedbackForm(props: FeedbackFormProps) {
         router.back()
     }
 
+    // const fetchFeedback = async (id: string) => {
+    //     const { data } = await getFeedback(id);
+    //     console.log(data())
+
+    // }
+
+    // useEffect(() => {
+    //     console.log(params)
+    //     if (params?.id) {
+    //         fetchFeedback(params.id)
+    //     }
+    // }, [params?.id])
+
     return (
         <React.Fragment>
             <div style={{ marginBottom: '5rem' }}>
                 <GoBack />
             </div>
             <div className={styles.formContainer}>
-                <div className={styles.formIcon}><MdAdd /></div>
-                <h4 className={styles.heading}>Create New Feedback</h4>
+                <div className={styles.formIcon}>{type === 'create' ? <MdAdd /> : <BsPenFill fontSize='2rem' />}</div>
+                <h4 className={styles.heading}> {type === 'create' ? 'Create New Feedback' : 'Update Feedback'}</h4>
                 <form>
                     <div className={styles.formField}>
                         <Input error={error?.title} value={formState.title} onChange={handleChange} label='Feedback Title' name='title' description='Add a short, descriptive headline' />
@@ -121,7 +138,7 @@ function FeedbackForm(props: FeedbackFormProps) {
                         <TextBox error={error?.details} value={formState.details} onChange={handleChange} style={{ height: '10rem' }} label='Feedback Detail' name='details' description='Include any specific comments on what should be improved, added, etc.' />
                     </div>
                     <div className={styles.buttonContainer}>
-                        <Button className={styles.feedbackBtn} onClick={handleSubmit}>Add Feedback</Button>
+                        <Button className={styles.feedbackBtn} onClick={handleSubmit}>{type === 'update' ? 'Update' : 'Create'}</Button>
                         <Button className={styles.cancelBtn} variant='dark' onClick={handleCancel}>Cancel</Button>
                         {
                             type === 'update' &&
