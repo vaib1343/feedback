@@ -28,27 +28,30 @@ export const addFeedback = async (payload: Feedback) => {
     });
 };
 
-export const updateFeedback = async (
-    payload: Feedback & { vote: number; comments: Array<string>; id: string }
-) => {
-    const { id, vote, comments, title, details, category, updateStatus } =
-        payload;
-    const collRef = doc(db, "feedbacks", id);
-    return await updateDoc(collRef, {
-        title,
-        category,
-        details,
-        updateStatus,
-        comments,
-        vote,
-    });
+export const updateFeedback = async (payload: Feedback) => {
+    try {
+        const { id, vote, comments, title, details, category, updateStatus } =
+            payload;
+            console.log(id)
+        const collRef = doc(db, "feedbacks", id);
+        return await updateDoc(collRef, {
+            title,
+            category,
+            details,
+            updateStatus,
+            comments,
+            vote,
+        });
+    } catch (error) {
+        console.log(error)
+    }
 };
 
 export const getFeedback = async (id: string) => {
     const collRef = doc(db, "feedbacks", id);
-    const response  = await getDoc(collRef);
-    return response.data()
-}
+    const response = await getDoc(collRef);
+    return {...response.data(), id: response.id};
+};
 
 export const getFeedbacks = async (queryCb?: () => Query<DocumentData>) => {
     const feedbacks: any[] = [];

@@ -23,14 +23,15 @@ interface FeedbackProps {
 
 function Feedback(props: FeedbackProps) {
     const { params } = props;
-    const [feedback, setFeedback] = useState<Feedback & { vote: number; comments: Array<string>; id: string }>();
+    const [feedback, setFeedback] = useState<Feedback>({} as Feedback);
     const fetchFeedback = async (id: string) => {
         const response = await getFeedback(id);
-        setFeedback(response as Feedback & { vote: number; comments: Array<string>; id: string })
+        setFeedback(response as Feedback)
     }
     useEffect(() => {
         fetchFeedback(params?.id)
     }, [params.id])
+
     return <div className={`${jost.className} ${styles.mainContainer}`}>
         <div className={styles.container}>
             <GoBack />
@@ -45,12 +46,10 @@ function Feedback(props: FeedbackProps) {
             <Tag className={styles.tag}>{feedback?.vote}</Tag>
             <div className={styles.comment}>
                 <FaComment color='#CDD2EE' size='2rem' />
-                <span>{feedback?.comments.length}</span>
+                <span>{feedback?.comments?.length}</span>
             </div>
         </Card>
-        <Container style={{ marginTop: '2.4rem' }}>
-            <CommentSection />
-        </Container>
+        <CommentSection feedback={feedback} />
     </div>
 }
 
