@@ -52,7 +52,7 @@ export const login = async (payload: { email: string; password: string }) => {
     try {
         const { email, password } = payload;
         const user = await signInWithEmailAndPassword(auth, email, password);
-        console.log({ user });
+        return user;
     } catch (error) {
         console.log(error);
     }

@@ -11,6 +11,6 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <div style={{ height: '100%', width: '100vw', backgroundColor: '#F7F8FD' }}>{children}</div>
+    <div style={{ minHeight: '100%', width: '100vw', backgroundColor: '#F7F8FD' }}>{children}</div>
   )
 }

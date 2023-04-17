@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
-import { UserContext } from '../context/user-context';
 import { useRouter } from 'next/navigation';
+import { useAppSelector } from '../store';
 
 function PrivateRoutes<T>(WrappedComponent: React.ComponentType<T>) {
   const displayName =
@@ -8,7 +8,7 @@ function PrivateRoutes<T>(WrappedComponent: React.ComponentType<T>) {
 
   const Component = (props: Omit<T, ''>) => {
     const router = useRouter();
-    const { user } = useContext(UserContext);
+    const {user} = useAppSelector(state => state.auth)
 
     useEffect(() => {
       if (!Object.keys(user).length) {

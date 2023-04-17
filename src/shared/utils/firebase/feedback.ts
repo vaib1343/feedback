@@ -12,9 +12,36 @@ import {
     updateDoc,
     doc,
     getDoc,
+    deleteDoc,
 } from "firebase/firestore";
 
-export const addFeedback = async (payload: Feedback) => {
+export const getFeedback = async (id: string) => {
+    const collRef = doc(db, "feedbacks", id);
+    const response = await getDoc(collRef);
+    return { ...response.data(), id: response.id };
+};
+
+export const getFeedbacks = async (
+    queryCb?: () => Query<DocumentData>
+): Promise<Feedback[]> => {
+    const feedbacks: Feedback[] = [];
+    const collRef = collection(db, "feedbacks");
+    let q;
+    if (queryCb) {
+        q = queryCb();
+    }
+    const response = await getDocs(collRef);
+    response.docs.map((doc) => {
+        feedbacks.push({ ...doc.data(), id: doc.id } as Feedback);
+    });
+    return feedbacks;
+};
+
+export const addFeedback = async (payload: {
+    title: string;
+    details: string;
+    category: string;
+}) => {
     const collRef = collection(db, "feedbacks");
     const { title, details, category } = payload;
     return await addDoc(collRef, {
@@ -32,7 +59,7 @@ export const updateFeedback = async (payload: Feedback) => {
     try {
         const { id, vote, comments, title, details, category, updateStatus } =
             payload;
-            console.log(id)
+        console.log(id);
         const collRef = doc(db, "feedbacks", id);
         return await updateDoc(collRef, {
             title,
@@ -43,26 +70,11 @@ export const updateFeedback = async (payload: Feedback) => {
             vote,
         });
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 };
 
-export const getFeedback = async (id: string) => {
-    const collRef = doc(db, "feedbacks", id);
-    const response = await getDoc(collRef);
-    return {...response.data(), id: response.id};
-};
-
-export const getFeedbacks = async (queryCb?: () => Query<DocumentData>) => {
-    const feedbacks: any[] = [];
-    const collRef = collection(db, "feedbacks");
-    let q;
-    if (queryCb) {
-        q = queryCb();
-    }
-    const response = await getDocs(collRef);
-    response.docs.map((doc) => {
-        feedbacks.push({ ...doc.data(), id: doc.id });
-    });
-    return feedbacks;
-};
+export const deleteFeedback = async (id: string) => {
+    const docRef = doc(db, 'feedbacks', id);
+    return await deleteDoc(docRef);
+}

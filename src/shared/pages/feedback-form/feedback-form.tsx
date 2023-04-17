@@ -11,6 +11,8 @@ import Button from '@/shared/components/shared/button/button';
 import GoBack from '@/shared/components/common/go-back/go-back';
 import { addFeedback, getFeedback } from '@/shared/utils/firebase/feedback';
 import { CATEGORY_OPTIONS, STATUS_OPTIONS } from '@/shared/config/constant';
+import { useAppDispatch, useAppSelector } from '@/shared/store';
+import { deleteFeedbackThunk, fetchFeedbackThunk, fetchFeedbacksThunk } from '@/shared/store/feedbackSlice';
 
 interface FormFieldTypes {
     category: string,
@@ -27,12 +29,16 @@ interface FieldErrorTypes {
 }
 
 interface FeedbackFormProps {
+    id?: string;
     type: 'update' | 'create';
+    handleSubmit: (payload: any) => void
 }
 
 function FeedbackForm(props: FeedbackFormProps) {
     const { type } = props
     const [error, setError] = useState<FieldErrorTypes>();
+    const dispatch = useAppDispatch();
+    const { feedback } = useAppSelector(state => state.feedback)
     const [formState, setFormState] = useState<FormFieldTypes>({
         category: 'enhancement',
         updateStatus: '',
@@ -40,9 +46,6 @@ function FeedbackForm(props: FeedbackFormProps) {
         details: '',
     });
     const router = useRouter();
-    const { get } = useSearchParams();
-    console.log(get('id'))
-
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { value, name } = e.target;
@@ -52,6 +55,7 @@ function FeedbackForm(props: FeedbackFormProps) {
     }
 
     const handleSelect = (value: string, id: string) => {
+        console.log({ value, id })
         const newState = { ...formState };
         newState[id as keyof FormFieldTypes] = value
         setFormState(newState);
@@ -71,25 +75,24 @@ function FeedbackForm(props: FeedbackFormProps) {
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         try {
-            const { title, details, category } = formState;
-            const payload = {
+            const { title, details, category, updateStatus } = formState;
+            let payload: any = {
                 title,
                 details,
                 category
             }
+            if (props.type === 'update') {
+                payload.updateStatus = updateStatus;
+            }
             if (checkField(payload)) {
                 return
             }
-            const response = await addFeedback(payload);
-            if (response) {
-                setFormState({
-                    category: 'enhancement',
-                    updateStatus: '',
-                    title: '',
-                    details: '',
-                });
-                router.back()
+            if (props.type === 'update') {
+                payload.comments = feedback.comments;
+                payload.vote = feedback.vote;
+                payload.id = feedback.id;
             }
+            props.handleSubmit(payload);
         } catch (err) {
             console.log(err)
         }
@@ -100,18 +103,33 @@ function FeedbackForm(props: FeedbackFormProps) {
         router.back()
     }
 
-    // const fetchFeedback = async (id: string) => {
-    //     const { data } = await getFeedback(id);
-    //     console.log(data())
+    const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
 
-    // }
+        if(props.id) {
+            await dispatch(deleteFeedbackThunk(props.id));
+            await dispatch(fetchFeedbacksThunk());
+            router.push('/feedbacks')
+        }
 
-    // useEffect(() => {
-    //     console.log(params)
-    //     if (params?.id) {
-    //         fetchFeedback(params.id)
-    //     }
-    // }, [params?.id])
+    }
+
+    useEffect(() => {
+        if (props.type === 'update' && props.id && !Object.keys(feedback).length) {
+            dispatch(fetchFeedbackThunk(props.id));
+        }
+    }, [props.type, props.id, dispatch, feedback])
+
+    useEffect(() => {
+        if (props.type === 'update') {
+            setFormState({
+                category: feedback.category,
+                title: feedback.title,
+                updateStatus: feedback.updateStatus,
+                details: feedback.details
+            })
+        }
+    }, [feedback, props.type])
 
     return (
         <React.Fragment>
@@ -126,7 +144,7 @@ function FeedbackForm(props: FeedbackFormProps) {
                         <Input error={error?.title} value={formState.title} onChange={handleChange} label='Feedback Title' name='title' description='Add a short, descriptive headline' />
                     </div>
                     <div className={styles.formField}>
-                        <Select defaultValue={formState.category} onChange={(e) => handleSelect(e, 'category')} label='Category' name='category' description='Choose a category for your feedback' options={CATEGORY_OPTIONS} />
+                        <Select value={formState.category} onChange={(e) => handleSelect(e, 'category')} label='Category' name='category' description='Choose a category for your feedback' options={CATEGORY_OPTIONS} />
                     </div>
                     {
                         type === 'update' &&
@@ -142,7 +160,7 @@ function FeedbackForm(props: FeedbackFormProps) {
                         <Button className={styles.cancelBtn} variant='dark' onClick={handleCancel}>Cancel</Button>
                         {
                             type === 'update' &&
-                            <Button className={styles.deleteBtn} variant='danger'>Delete</Button>
+                            <Button className={styles.deleteBtn} variant='danger' onClick={handleDelete}>Delete</Button>
                         }
                     </div>
                 </form>

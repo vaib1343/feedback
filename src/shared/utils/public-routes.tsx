@@ -1,7 +1,7 @@
 "use client"
 import React, { useContext, useEffect } from 'react';
-import { UserContext } from '../context/user-context';
 import { useRouter } from 'next/navigation';
+import { useAppSelector } from '../store';
 
 function PublicRoutes<T>(WrappedComponent: React.ComponentType<T>) {
   const displayName =
@@ -9,7 +9,7 @@ function PublicRoutes<T>(WrappedComponent: React.ComponentType<T>) {
 
   const Component = (props: Omit<T, ''>) => {
     const router = useRouter();
-    const { user } = useContext(UserContext);
+    const { user } = useAppSelector(state => state.auth)
 
     useEffect(() => {
       if (user && Object.keys(user).length) {
