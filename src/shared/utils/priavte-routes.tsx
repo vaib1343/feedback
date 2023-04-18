@@ -8,18 +8,16 @@ function PrivateRoutes<T>(WrappedComponent: React.ComponentType<T>) {
 
   const Component = (props: Omit<T, ''>) => {
     const router = useRouter();
-    const {user} = useAppSelector(state => state.auth)
+    const { user } = useAppSelector(state => state.auth)
 
-    useEffect(() => {
-      if (!Object.keys(user).length) {
-        router.push('/login')
-      }
-    }, [user, router]);
+    if (!Object.keys(user).length) {
+      router.push('/login')
+      return null;
+    }
 
-    if(user && Object.keys(user).length) {
+    if (Object.keys(user).length) {
       return <WrappedComponent {...props} {...(props as T)} />;
     }
-    return null
   };
 
   Component.displayName = `Private(${displayName})`;

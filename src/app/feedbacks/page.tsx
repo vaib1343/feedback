@@ -18,16 +18,11 @@ function Feedbacks() {
   const router = useRouter();
   const query = useSearchParams();
   const category = query.get('category');
+  const sortBy = query.get('sortby')
 
   useEffect(() => {
-    dispatch(fetchFeedbacksThunk())
-  }, [dispatch])
-
-  useEffect(() => {
-    if (!category) {
-      router.replace('/feedbacks?category=all&sortby=most_voted')
-    }
-  }, [category, router])
+    dispatch(fetchFeedbacksThunk({ category, sortBy }))
+  }, [dispatch, category, sortBy])
 
   return (
     <div className={`${jost.className} main_box`} style={{ height: '100%' }}>

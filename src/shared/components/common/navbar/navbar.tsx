@@ -116,7 +116,7 @@ function Navbar() {
           gap: '1rem'
         }}>
           {
-            Tags.map((item) => <Tag key={item.id} selected={categoryQuery === item.value} onClick={() => handleCategory(item.value)}>{item.label}</Tag>)
+            Tags.map((item) => <Tag key={item.id} selected={(categoryQuery ? categoryQuery : 'all') === item.value} onClick={() => handleCategory(item.value)}>{item.label}</Tag>)
           }
         </Container>
         <Container>

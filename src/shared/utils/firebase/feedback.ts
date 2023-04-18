@@ -13,6 +13,7 @@ import {
     doc,
     getDoc,
     deleteDoc,
+    where,
 } from "firebase/firestore";
 
 export const getFeedback = async (id: string) => {
@@ -21,16 +22,18 @@ export const getFeedback = async (id: string) => {
     return { ...response.data(), id: response.id };
 };
 
-export const getFeedbacks = async (
-    queryCb?: () => Query<DocumentData>
-): Promise<Feedback[]> => {
+export const getFeedbacks = async (q: {
+    category: string | null;
+}): Promise<Feedback[]> => {
     const feedbacks: Feedback[] = [];
+    let queryDoc;
     const collRef = collection(db, "feedbacks");
-    let q;
-    if (queryCb) {
-        q = queryCb();
+    if (q.category != null && q.category !== "all") {
+        queryDoc = query(collRef, where("category", "==", q.category));
+    } else {
+        queryDoc = query(collRef);
     }
-    const response = await getDocs(collRef);
+    const response = await getDocs(queryDoc);
     response.docs.map((doc) => {
         feedbacks.push({ ...doc.data(), id: doc.id } as Feedback);
     });
@@ -75,6 +78,6 @@ export const updateFeedback = async (payload: Feedback) => {
 };
 
 export const deleteFeedback = async (id: string) => {
-    const docRef = doc(db, 'feedbacks', id);
+    const docRef = doc(db, "feedbacks", id);
     return await deleteDoc(docRef);
-}
+};

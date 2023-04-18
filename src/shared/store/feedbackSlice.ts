@@ -7,6 +7,7 @@ import {
     addFeedback,
     deleteFeedback,
 } from "../utils/firebase/feedback";
+import { sortFeedback } from "../utils/feedbackUtils";
 
 export interface FeedbackState {
     status: "loading" | "idle";
@@ -24,9 +25,9 @@ const initialState: FeedbackState = {
 
 export const fetchFeedbacksThunk = createAsyncThunk(
     "feedbacks/fetch",
-    async () => {
-        const response = await getFeedbacks();
-        return response;
+    async (q: { category: string | null; sortBy: string | null }) => {
+        const response = await getFeedbacks({ category: q.category });
+        return sortFeedback(response, q.sortBy);
     }
 );
 
@@ -55,10 +56,13 @@ export const updateFeedbackThunk = createAsyncThunk(
     }
 );
 
-export const deleteFeedbackThunk = createAsyncThunk("feedback/delete", async (id: string) => {
-    const response = await deleteFeedback(id);
-    return response;
-})
+export const deleteFeedbackThunk = createAsyncThunk(
+    "feedback/delete",
+    async (id: string) => {
+        const response = await deleteFeedback(id);
+        return response;
+    }
+);
 
 export const feedBacksSlice = createSlice({
     name: "feedbacks",
