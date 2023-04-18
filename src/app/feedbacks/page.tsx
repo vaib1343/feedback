@@ -13,7 +13,7 @@ const jost = Jost({
 
 function Feedbacks() {
   const { feedbacks } = useAppSelector(state => state.feedback)
-  const { user } = useAppSelector(state => state.auth)
+  const { user, status } = useAppSelector(state => state.auth)
   const dispatch = useAppDispatch();
   const router = useRouter();
   const query = useSearchParams();
@@ -23,6 +23,15 @@ function Feedbacks() {
   useEffect(() => {
     dispatch(fetchFeedbacksThunk({ category, sortBy }))
   }, [dispatch, category, sortBy])
+
+  if (status === 'loading') {
+    return <p>loading</p>
+  }
+
+  if (status === 'idle' && !Object.keys(user).length) {
+    router.push('/login')
+    return null
+  }
 
   return (
     <div className={`${jost.className} main_box`} style={{ height: '100%' }}>
