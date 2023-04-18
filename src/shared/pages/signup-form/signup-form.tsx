@@ -5,6 +5,7 @@ import Input from '@/shared/components/shared/input/input';
 import Button from '@/shared/components/shared/button/button';
 import { firebaseSignUp } from '@/shared/utils/firebase/auth';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface userState {
     firstName: string,
@@ -60,6 +61,7 @@ function SignUpForm() {
                     SignUp
                 </Button>
             </div>
+            <Link href='/login' className={styles.loginText}>Already have an account?</Link>
         </form>
     )
 }

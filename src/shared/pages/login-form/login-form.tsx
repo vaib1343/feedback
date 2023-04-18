@@ -5,6 +5,7 @@ import styles from '@/shared/pages/login-form/login-form.module.scss';
 import Input from '@/shared/components/shared/input/input';
 import Button from '@/shared/components/shared/button/button';
 import { login } from '@/shared/utils/firebase/auth';
+import Link from 'next/link';
 
 
 
@@ -46,6 +47,7 @@ function LoginForm() {
                     Login
                 </Button>
             </div>
+            <Link href='/signup' className={styles.signupText}>Dont have an account?</Link>
         </form>
     )
 }

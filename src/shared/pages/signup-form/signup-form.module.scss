@@ -14,6 +14,15 @@
     display: grid;
 }
 
+.loginText{
+    display: block;
+    font-size: 1.5rem;
+    color: #AD1FEA;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+
 @media only screen and (min-width: 768px) {
     .btnContainer {
         grid-template-columns: repeat(8, 1fr);
