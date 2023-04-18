@@ -1,28 +1,31 @@
 "use client"
-import { CATEGORY_OPTIONS } from '@/shared/config/constant'
+import { useAppDispatch } from '@/shared/store'
+import { fetchFeedbacksThunk, updateFeedbackThunk } from '@/shared/store/feedbackSlice'
 import { Feedback } from '@/shared/types/feedback.types'
-import { getFeedbacks, updateFeedback } from '@/shared/utils/firebase/feedback'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { FaComment } from 'react-icons/fa'
 import Card from 'src/shared/components/shared/card/card'
 import Tag from 'src/shared/components/shared/tag/tag'
 import styles from 'src/shared/pages/home/main-section/main-section.module.scss';
 
 interface MainSectionProps {
-  feedbacks: Array<Feedback & { vote: number, comments: Array<string>, id: string }> | undefined
+  feedbacks: Array<Feedback> | undefined
 }
 
 function MainSection(props: MainSectionProps) {
   const { feedbacks } = props;
+  const dispatch = useAppDispatch();
 
-  const handleVote = async (feedback: Feedback & { vote: number, comments: Array<string>, id: string }) => {
+  const handleVote = async (feedback: Feedback) => {
     try {
       const payload = {
         ...feedback,
         vote: feedback.vote + 1,
       }
-      await updateFeedback(payload)
+      dispatch(updateFeedbackThunk(payload)).then(() => {
+        dispatch(fetchFeedbacksThunk());
+      })
     } catch (err) {
       console.log({ err })
     }

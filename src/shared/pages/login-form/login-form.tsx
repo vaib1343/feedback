@@ -23,8 +23,13 @@ function LoginForm() {
     }
 
     const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault()
-        await login(userDetails);
+        try{
+            event.preventDefault()
+            const response = await login(userDetails);
+            console.log({response})
+        }catch(err) {
+            console.log(err)
+        }
     }
 
     return (
