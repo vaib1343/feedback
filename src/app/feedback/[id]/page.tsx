@@ -11,6 +11,7 @@ import CommentSection from '@/shared/pages/comment-section/comment-section';
 import { useAppDispatch, useAppSelector } from '@/shared/store';
 import { fetchFeedbackThunk } from '@/shared/store/feedbackSlice';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const jost = Jost({
     subsets: ['latin']
@@ -24,7 +25,9 @@ interface FeedbackProps {
 
 function Feedback(props: FeedbackProps) {
     const { params } = props;
+    const router = useRouter();
     const dispatch = useAppDispatch();
+    const { status, user } = useAppSelector(state => state.auth)
     const { feedback } = useAppSelector(state => state.feedback)
 
     useEffect(() => {
@@ -32,6 +35,15 @@ function Feedback(props: FeedbackProps) {
             dispatch(fetchFeedbackThunk(params.id))
         }
     }, [params.id, dispatch])
+
+    if (status === 'loading') {
+        return <p>loading</p>
+      }
+    
+      if (status === 'idle' && !Object.keys(user).length) {
+        router.push('/login')
+        return null
+      }
 
 
     return <div className={`${jost.className} ${styles.mainContainer}`}>

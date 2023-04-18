@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../store';
-import { authSubscribe } from '../store/authSlice';
+import { authSubscribe, errorState, loadingState } from '../store/authSlice';
 import { onAuthSubscriber } from '../utils/firebase/auth';
 
 
@@ -10,13 +10,15 @@ interface UserProviderProps {
 }
 
 export default function UserProvider(props: UserProviderProps) {
-    const { user } = useAppSelector(state => state.auth)
     const dispatch = useAppDispatch();
 
     useEffect(() => {
+        dispatch(loadingState())
         const unsubcribe = onAuthSubscriber((user) => {
             if (user) {
                 dispatch(authSubscribe(user))
+            } else {
+                dispatch(errorState())
             }
         })
         return unsubcribe
