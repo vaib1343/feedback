@@ -30,6 +30,7 @@ function CommentSection(props: CommentSectionProps) {
       payload.comments = [...feedback.comments, { userName: `${user.displayName}`, comment }]
       dispatch(updateFeedbackThunk(payload)).then(() => {
         dispatch(fetchFeedbackThunk(props.params.id))
+        setComment('')
       })
     }
   }
