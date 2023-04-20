@@ -51,7 +51,7 @@ function MainSection(props: MainSectionProps) {
             </div>
           </Card>
         ))
-        : <NoFeedback/>
+          : <NoFeedback />
       }
     </div>
   )
