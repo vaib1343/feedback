@@ -1,25 +1,34 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import Link from 'next/link';
 import styles from 'src/shared/components/common/navbar/roadmap/roadmap.module.scss';
 import List from 'src/shared/components/shared/list/list';
+import { useAppSelector } from '@/shared/store';
 
 interface RoadMapType {
   id: number | string, label: string, color: string, count: number | string,
 }
 
-const roadmapData = [
-  {
-    id: 0, label: 'Planned', color: '#F49F85', count: 5,
-  },
-  {
-    id: 1, label: 'In-Progress', color: '#AD1FEA', count: 10,
-  },
-  {
-    id: 2, label: 'Live', color: '#62BCFA', count: 5,
-  },
-]
+
 
 function Roadmap() {
+  const { feedbacks } = useAppSelector(state => state.feedback)
+
+  const numOfProgress = feedbacks.reduce((flag, currentValue) => currentValue.updateStatus === 'inprogress' ? flag + 1 : flag, 0)
+  const numOfPlanned = feedbacks.reduce((flag, currentValue) => currentValue.updateStatus === 'planned' ? flag + 1 : flag, 0)
+  const numOfLive = feedbacks.reduce((flag, currentValue) => currentValue.updateStatus === 'live' ? flag + 1 : flag, 0)
+
+  const roadmapData = useMemo(() => [
+    {
+      id: 0, label: 'Planned', color: '#F49F85', count: numOfPlanned,
+    },
+    {
+      id: 1, label: 'In-Progress', color: '#AD1FEA', count: numOfProgress,
+    },
+    {
+      id: 2, label: 'Live', color: '#62BCFA', count: numOfLive,
+    },
+  ], [numOfPlanned, numOfProgress, numOfLive])
+
   return (
     <section>
       <div className={styles.heading}>
