@@ -2,13 +2,16 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User, Unsubscribe } from "firebase/auth";
 import { onAuthSubscriber } from "../utils/firebase/auth";
 
+
+
 export interface AuthState {
-    user: User;
+    user: User & {role: string};
     status: 'loading' | 'idle'
 }
 
+
 const initialState: AuthState = {
-    user: {} as User,
+    user: {} as User & {role: string},
     status: 'loading',
 };
 
@@ -24,7 +27,7 @@ const authSlice = createSlice({
             state.status = 'idle';
         },
         logoutState: (state) => {
-            state.user = {} as User;
+            state.user = {} as User & {role: string};
         },
         errorState: (state) => {
             state.status = 'idle';

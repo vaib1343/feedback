@@ -37,6 +37,7 @@ interface FeedbackFormProps {
 function FeedbackForm(props: FeedbackFormProps) {
     const { type } = props
     const [error, setError] = useState<FieldErrorTypes>();
+    const { user } = useAppSelector(state => state.auth)
     const dispatch = useAppDispatch();
     const { feedback } = useAppSelector(state => state.feedback)
     const [formState, setFormState] = useState<FormFieldTypes>({
@@ -106,7 +107,7 @@ function FeedbackForm(props: FeedbackFormProps) {
     const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        if(props.id) {
+        if (props.id) {
             await dispatch(deleteFeedbackThunk(props.id));
             await dispatch(fetchFeedbacksThunk());
             router.push('/feedbacks')
@@ -147,7 +148,7 @@ function FeedbackForm(props: FeedbackFormProps) {
                         <Select value={formState.category} onChange={(e) => handleSelect(e, 'category')} label='Category' name='category' description='Choose a category for your feedback' options={CATEGORY_OPTIONS} />
                     </div>
                     {
-                        type === 'update' &&
+                        type === 'update' && user.role === 'admin' &&
                         <div className={styles.formField}>
                             <Select error={error?.updateStatus} defaultValue={formState.updateStatus} onChange={(e) => handleSelect(e, 'updateStatus')} label='Update Status' name='updateStatus' description='Change feature state' options={STATUS_OPTIONS} />
                         </div>

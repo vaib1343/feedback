@@ -8,7 +8,7 @@ import {
     updateProfile,
     onAuthStateChanged,
     NextOrObserver,
-    User
+    User,
 } from "firebase/auth";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 
@@ -35,6 +35,7 @@ export const firebaseSignUp = async (payload: SignUpPayload) => {
                     displayName: `${firstName} ${lastName}`,
                     email,
                     createdAt: serverTimestamp(),
+                    role: "user",
                 });
             }
         }
@@ -55,6 +56,16 @@ export const login = async (payload: { email: string; password: string }) => {
         return user;
     } catch (error) {
         console.log(error);
+    }
+};
+
+export const getUserDetails = async (uid: string) => {
+    try {
+        const docRef = doc(db, "users", uid);
+        const response = await getDoc(docRef);
+        return { ...response.data() };
+    } catch (err) {
+        console.log(err)
     }
 };
 

@@ -65,6 +65,7 @@ function Navbar() {
     router.replace(`/feedbacks?category=${value}&sortby=${sortBy}`)
   }
 
+  
   return (
     <>
       <nav className={styles.mobileContainer}>

@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../store';
 import { authSubscribe, errorState, loadingState } from '../store/authSlice';
-import { onAuthSubscriber } from '../utils/firebase/auth';
+import { getUserDetails, onAuthSubscriber } from '../utils/firebase/auth';
 
 
 interface UserProviderProps {
@@ -14,9 +14,10 @@ export default function UserProvider(props: UserProviderProps) {
 
     useEffect(() => {
         dispatch(loadingState())
-        const unsubcribe = onAuthSubscriber((user) => {
+        const unsubcribe = onAuthSubscriber(async (user) => {
             if (user) {
-                dispatch(authSubscribe(user))
+                const response = await getUserDetails(user?.uid)
+                dispatch(authSubscribe({ ...user, ...response}))
             } else {
                 dispatch(errorState())
             }
