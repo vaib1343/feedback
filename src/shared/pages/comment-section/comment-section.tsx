@@ -7,6 +7,7 @@ import { updateFeedback } from '@/shared/utils/firebase/feedback';
 import { Feedback } from '@/shared/types/feedback.types';
 import { useAppDispatch, useAppSelector } from '@/shared/store';
 import { fetchFeedbackThunk, updateFeedbackThunk } from '@/shared/store/feedbackSlice';
+import toast from 'react-hot-toast';
 
 
 interface CommentSectionProps {
@@ -31,6 +32,7 @@ function CommentSection(props: CommentSectionProps) {
       dispatch(updateFeedbackThunk(payload)).then(() => {
         dispatch(fetchFeedbackThunk(props.params.id))
         setComment('')
+        toast.success('comment successful')
       })
     }
   }

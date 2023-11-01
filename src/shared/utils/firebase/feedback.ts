@@ -44,18 +44,25 @@ export const addFeedback = async (payload: {
     title: string;
     details: string;
     category: string;
+    userId: string;
 }) => {
     const collRef = collection(db, "feedbacks");
-    const { title, details, category } = payload;
-    return await addDoc(collRef, {
-        title,
-        details,
-        category,
-        updateStatus: "inprogress",
-        createdAt: serverTimestamp(),
-        comments: [],
-        vote: 0,
-    });
+    const { title, details, category, userId } = payload;
+    try {
+        return await addDoc(collRef, {
+            title,
+            details,
+            category,
+            updateStatus: "inprogress",
+            createdAt: serverTimestamp(),
+            comments: [],
+            vote: 0,
+            userId,
+        });
+    } catch (error: any) {
+        throw new Error(error)
+    }
+    
 };
 
 export const updateFeedback = async (payload: Feedback) => {

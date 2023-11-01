@@ -40,13 +40,17 @@ export const firebaseSignUp = async (payload: SignUpPayload) => {
             }
         }
         return response;
-    } catch (error) {
-        console.log(error);
+    } catch (error: any) {
+        throw new Error(error);
     }
 };
 
 export const logout = async () => {
-    return await signOut(auth);
+    try {
+        return await signOut(auth);
+    } catch (error: any) {
+        throw new Error(error);
+    }
 };
 
 export const login = async (payload: { email: string; password: string }) => {
@@ -54,8 +58,8 @@ export const login = async (payload: { email: string; password: string }) => {
         const { email, password } = payload;
         const user = await signInWithEmailAndPassword(auth, email, password);
         return user;
-    } catch (error) {
-        console.log(error);
+    } catch (error: any) {
+        throw new Error(error);
     }
 };
 
@@ -65,7 +69,7 @@ export const getUserDetails = async (uid: string) => {
         const response = await getDoc(docRef);
         return { ...response.data() };
     } catch (err) {
-        console.log(err)
+        console.log(err);
     }
 };
 

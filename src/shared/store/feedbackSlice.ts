@@ -25,7 +25,9 @@ const initialState: FeedbackState = {
 
 export const fetchFeedbacksThunk = createAsyncThunk(
     "feedbacks/fetch",
-    async (q?: { category: string | null; sortBy: string | null }) => {
+    async (
+        q?: { category: string | null; sortBy: string | null } | undefined
+    ) => {
         const response = await getFeedbacks({ category: q?.category || null });
         return sortFeedback(response, q?.sortBy || null);
     }
@@ -42,7 +44,12 @@ export const fetchFeedbackThunk = createAsyncThunk(
 
 export const createFeedbackThunk = createAsyncThunk(
     "feedback/create",
-    async (payload: { title: string; details: string; category: string }) => {
+    async (payload: {
+        title: string;
+        details: string;
+        category: string;
+        userId: string;
+    }) => {
         const response = await addFeedback(payload);
         return response;
     }

@@ -10,10 +10,11 @@ type Comment = Array<{ userName: string; comment: string }>;
 export interface Feedback {
     id: string;
     vote: number;
-    comments: Comment
+    comments: Comment;
     category: string;
     updateStatus?: string;
     title: string;
     details: string;
-    createdAt: any
+    createdAt: any;
+    userId: string;
 }

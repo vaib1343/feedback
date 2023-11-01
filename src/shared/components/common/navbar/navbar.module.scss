@@ -93,7 +93,8 @@
 
     .bigScreenContainger {
         font-size: 1.5rem;
-        display: grid;
+        display: flex;
+        justify-content: space-between;
         grid-template-columns: repeat(3, 1fr);
         gap: 1rem;
         padding-top: 5.6rem;
