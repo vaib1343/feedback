@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import { TailSpin } from "react-loader-spinner";
 
 function Loader() {
-  return (
-    <div>Loader</div>
-  )
+    return <TailSpin color="#fff" height="20" width="20" />;
 }
 
-export default Loader
+export default Loader;

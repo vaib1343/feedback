@@ -16,6 +16,7 @@ import {
     fetchFeedbackThunk,
     fetchFeedbacksThunk,
 } from "@/shared/store/feedbackSlice";
+import Loader from "@/shared/components/shared/loader/loader";
 
 interface FormFieldTypes {
     category: string;
@@ -35,6 +36,7 @@ interface FeedbackFormProps {
     id?: string;
     type: "update" | "create";
     handleSubmit: (payload: any) => void;
+    isLoading: boolean;
 }
 
 function FeedbackForm(props: FeedbackFormProps) {
@@ -215,7 +217,19 @@ function FeedbackForm(props: FeedbackFormProps) {
                             className={styles.feedbackBtn}
                             onClick={handleSubmit}
                         >
-                            {type === "update" ? "Update" : "Create"}
+                            {props.isLoading ? (
+                                <span
+                                    style={{
+                                        display: "flex",
+                                    }}
+                                >
+                                    <Loader /> <span>Loading...</span>
+                                </span>
+                            ) : type === "update" ? (
+                                "Update"
+                            ) : (
+                                "Create"
+                            )}
                         </Button>
                         <Button
                             className={styles.cancelBtn}

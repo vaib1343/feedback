@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import FeedbackForm from "@/shared/pages/feedback-form/feedback-form";
 import styles from "@/app/feedback/create/create-feedback.module.scss";
 import { Jost } from "next/font/google";
@@ -17,6 +17,7 @@ function CreateFeedback() {
     const router = useRouter();
     const dispatch = useAppDispatch();
     const { user, status } = useAppSelector((state) => state.auth);
+    const [isLoading, setLoading] = useState(false);
 
     const handleSubmit = async (payload: {
         title: string;
@@ -24,14 +25,17 @@ function CreateFeedback() {
         details: string;
         userId: string;
     }) => {
+        setLoading(true);
         try {
             const response = await addFeedback(payload);
             if (response) {
                 await dispatch(fetchFeedbacksThunk());
                 toast.success("feedback created");
                 router.back();
+                setLoading(false);
             }
         } catch (error: any) {
+            setLoading(false);
             toast.error(error?.message);
         }
     };
@@ -47,7 +51,7 @@ function CreateFeedback() {
 
     return (
         <div className={`${jost.className} ${styles.container}`}>
-            <FeedbackForm type="create" handleSubmit={handleSubmit} />
+            <FeedbackForm type="create" handleSubmit={handleSubmit} isLoading={isLoading} />
         </div>
     );
 }

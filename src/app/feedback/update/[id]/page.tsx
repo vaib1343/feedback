@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Jost } from "next/font/google";
 import FeedbackForm from "@/shared/pages/feedback-form/feedback-form";
 import styles from "@/app/feedback/update/[id]/update-feedback.module.scss";
@@ -16,18 +16,22 @@ const jost = Jost({
 });
 
 function UpdateFeedback(props: { params: { id: string } }) {
+    const [isLoading, setLoading] = useState(false);
     const { params } = props;
     const router = useRouter();
     const dispatch = useAppDispatch();
     const { user, status } = useAppSelector((state) => state.auth);
 
     const handleSubmit = async (payload: any) => {
+        setLoading(true);
         try {
             await dispatch(updateFeedbackThunk(payload));
             await dispatch(fetchFeedbackThunk(params.id));
             router.back();
             toast.success("updated successfully");
+            setLoading(false);
         } catch (error: any) {
+            setLoading(false);
             if (error?.message) {
                 toast.error(error?.message);
             } else {
@@ -48,6 +52,7 @@ function UpdateFeedback(props: { params: { id: string } }) {
     return (
         <div className={`${jost.className} ${styles.container}`}>
             <FeedbackForm
+                isLoading={isLoading}
                 type="update"
                 handleSubmit={handleSubmit}
                 id={params.id}
